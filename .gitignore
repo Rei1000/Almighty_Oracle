@@ -1,0 +1,12 @@
+# Verstecke sensible Umgebungsvariablen
+.env
+
+# Python Bytecode
+__pycache__/
+*.py[cod]
+
+# Virtuelle Umgebung (nur, wenn du sie im Projekt hast)
+.venv/
+
+# PyCharm-Dateien (optional)
+.idea/

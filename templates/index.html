@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ask the Almighty Oracle</title>
+    <!--
+      CSS-Styles für das Layout und Design der Seite.
+      Sorgt für dunkles Design, zentrierte Elemente und responsives Styling.
+    -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <style>
+        body, input {
+            font-family: 'Montserrat', sans-serif;
+        }
+        body {
+            padding: 20px;
+            background-color: #282c34;
+            text-align: center;
+            color: #f5f5f5;
+        }
+        .description {
+            font-size: 1.2em;
+            color: #adb5bd;
+            margin-bottom: 30px;
+        }
+        form {
+            background-color: #495057;
+            padding: 20px;
+            width: 60%;
+            margin: 0 auto;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+        }
+        input[type=text] {
+            width: 70%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        input[type=submit] {
+            background-color: #6c757d;
+            color: #fff;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 28%;
+        }
+        h1 {
+            color: #f8f9fa;
+        }
+        #answerBox {
+            color: #adb5bd;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to the Ask the Almighty Oracle!</h1>
+    <p class="description">Ever in need of a mystical prophecy? love?<br/>Our almighty Oracle has all the answers! Just</p>
+    <!--
+      Hauptformular:
+      - Nimmt die Benutzerfrage entgegen (Input-Feld)
+      - Bietet Checkboxen zur Auswahl der gewünschten Orakel-Modelle
+      - Sendet alles via POST an den Flask-Server
+    -->
+    <form action="/" method ="POST">
+        <label for="question">Your question:</label><br>
+        <input type="text" id="question" name="question" placeholder="What is the meaning of life?" required>
+        <input type="submit" value="Ask Away!">
+
+        <!-- Auswahl der KI-Modelle -->
+        <div style="background-color: #333; padding: 12px; margin: 20px 0; border-radius: 6px; color: white;">
+          <p style="margin-bottom: 10px;">Select your Oracles:</p>
+          <label><input type="checkbox" name="model" value="openai/gpt-3.5-turbo" checked> GPT-3.5 Turbo</label><br>
+          <label><input type="checkbox" name="model" value="mistralai/mistral-small-3.1-24b-instruct:free" checked> Mistral Small 3.1</label><br>
+          <label><input type="checkbox" name="model" value="deepseek/deepseek-chat-v3-0324:free" checked> DeepSeek V3</label><br>
+        </div>
+    </form>
+    <!--
+      Bereich zur Anzeige der Orakel-Antworten.
+      Wird durch Flask mit Antworten aus den APIs ersetzt.
+    -->
+    <div id="answerBox">
+        <h2>The Almighty Oracle Answers:</h2>
+        <div id="loading" style="display: none; color: #f0ad4e; font-style: italic;">
+            The Oracle is thinking... 🔮
+        </div>
+        <!--
+          Dynamische Ausgabe der Antworten für alle aktivierten Orakel-Modelle.
+          Diese Daten werden von Flask übergeben, nachdem der Benutzer eine Frage gestellt hat.
+        -->
+        {% if answer %}
+            {% for model, response in answer.items() %}
+                <p><strong>{{ model }}:</strong> {{ response }}</p>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <script>
+        const form = document.querySelector("form");
+        const loading = document.getElementById("loading");
+
+        form.addEventListener("submit", function () {
+            loading.style.display = "block";
+
+            // Timeout-Abbruch nach 10 Sekunden
+            setTimeout(() => {
+                loading.innerText = "The Oracle took too long to respond... ⏳";
+            }, 10000);
+        });
+    </script>
+</body>
+</html>
